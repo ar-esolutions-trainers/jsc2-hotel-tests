@@ -1,7 +1,6 @@
 package com.esolutions.trainings.jsc2.req4;
 
 import com.esolutions.trainings.jsc2.Config;
-import com.esolutions.trainings.jsc2.req3.SSidResponse;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
