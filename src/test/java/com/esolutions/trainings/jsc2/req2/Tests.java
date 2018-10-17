@@ -30,9 +30,15 @@ public class Tests {
 
 	@Test
 	public void req2_book_f1_r1_1d() {
+		final int floor = 1;
+		final int room = 1;
 		final LocalDate today = LocalDate.now();
 		final LocalDate tomorrow = LocalDate.now().plus(1, ChronoUnit.DAYS);
 
+		//Expected
+		final double expectedPrice = new Book(today, tomorrow, floor, room).price();
+
+		//Actual
 		BookReq request = new BookReq(today, tomorrow);
 		final ResponseEntity<BookRes> resp =
 				restTemplate.postForEntity(Config.BASE_URL.concat(String.format(RESOURCE, 1, 1)), request, BookRes.class);
@@ -41,6 +47,6 @@ public class Tests {
 		final BookRes respBody = resp.getBody();
 		assertThat(respBody, is(notNullValue()));
 		assertThat(respBody.getBooked(), is(true));
-//		assertThat(respBody.getPrice(), is());
+		assertThat(respBody.getPrice(), is(expectedPrice));
 	}
 }
