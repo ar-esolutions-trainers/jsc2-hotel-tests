@@ -1,5 +1,7 @@
 package com.esolutions.trainings.jsc2.req2;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.time.LocalDate;
 
 public class BookReq {
@@ -11,10 +13,12 @@ public class BookReq {
 		this.checkOut = checkOut;
 	}
 
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	public LocalDate getCheckIn() {
 		return checkIn;
 	}
 
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	public LocalDate getCheckOut() {
 		return checkOut;
 	}

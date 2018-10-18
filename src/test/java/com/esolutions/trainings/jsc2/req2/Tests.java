@@ -5,13 +5,21 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.ClientHttpRequestExecution;
+import org.springframework.http.client.ClientHttpRequestInterceptor;
+import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.nio.charset.Charset;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.Collections;
 
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNull.notNullValue;
@@ -26,6 +34,13 @@ public class Tests {
 	@Before
 	public void setUp() {
 		this.restTemplate = new RestTemplate();
+		this.restTemplate.setInterceptors(Collections.singletonList(new ClientHttpRequestInterceptor() {
+			@Override
+			public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution) throws IOException {
+				System.out.println(new String(body, Charset.defaultCharset()));
+				return execution.execute(request, body);
+			}
+		}));
 	}
 
 	@Test
@@ -36,7 +51,7 @@ public class Tests {
 		final LocalDate tomorrow = LocalDate.now().plus(1, ChronoUnit.DAYS);
 
 		//Expected
-		final double expectedPrice = new Book(today, tomorrow, floor, room).price();
+		final BigDecimal expectedPrice = new Book(today, tomorrow, floor, room).price();
 
 		//Actual
 		BookReq request = new BookReq(today, tomorrow);

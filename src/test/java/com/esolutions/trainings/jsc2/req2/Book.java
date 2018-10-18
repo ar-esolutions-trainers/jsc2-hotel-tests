@@ -1,6 +1,6 @@
 package com.esolutions.trainings.jsc2.req2;
 
-import java.time.Duration;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.temporal.ChronoUnit;
@@ -24,12 +24,12 @@ public class Book {
 				.limit(Period.between(checkIn, checkOut).get(ChronoUnit.DAYS));
 	}
 
-	public double price() {
+	public BigDecimal price() {
 		final Room room = Rooms.roomsByFloorAndRoom.get(floor).get(this.room);
 
 		return this.days()
 				.map(Price::ofDay)
-				.mapToDouble(p -> p.priceOfRoom(room))
-				.sum();
+				.map(p -> BigDecimal.valueOf(p.priceOfRoom(room)))
+				.reduce(BigDecimal.ZERO, BigDecimal::add);
 	}
 }
