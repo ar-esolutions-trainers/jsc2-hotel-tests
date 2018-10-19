@@ -2,8 +2,10 @@ package com.esolutions.trainings.jsc2.req2;
 
 import com.esolutions.trainings.jsc2.Config;
 import org.junit.Before;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +29,7 @@ import static org.junit.Assert.fail;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TestsReq2 {
 	private static final String RESOURCE = "/floors/%s/rooms/%s/book";
 	private RestTemplate restTemplate;
@@ -42,7 +45,7 @@ public class TestsReq2 {
 	}
 
 	@Test
-	public void book_1d_standard_low() {
+	public void _01_book_1d_standard_low() {
 		final Room room = Rooms.roomsByFloorAndRoom.get(1).get(1);
 		if (bookedRooms.contains(room)) {
 			fail("Habitacion reservada previamente");
@@ -54,7 +57,7 @@ public class TestsReq2 {
 	}
 
 	@Test
-	public void book_1d_standard_hi() {
+	public void _02_book_1d_standard_hi() {
 		final Room room = Rooms.roomsByFloorAndRoom.get(1).get(2);
 		if (bookedRooms.contains(room)) {
 			fail("Habitacion reservada previamente");
@@ -66,7 +69,7 @@ public class TestsReq2 {
 	}
 
 	@Test
-	public void book_1d_suite_low() {
+	public void _03_book_1d_suite_low() {
 		final Room room = Rooms.roomsByFloorAndRoom.get(1).get(11);
 		if (bookedRooms.contains(room)) {
 			fail("Habitacion reservada previamente");
@@ -78,7 +81,7 @@ public class TestsReq2 {
 	}
 
 	@Test
-	public void book_1d_suite_hi() {
+	public void _04_book_1d_suite_hi() {
 		final Room room = Rooms.roomsByFloorAndRoom.get(1).get(18);
 		if (bookedRooms.contains(room)) {
 			fail("Habitacion reservada previamente");
@@ -90,7 +93,7 @@ public class TestsReq2 {
 	}
 
 	@Test
-	public void book_1w_standard() {
+	public void _05_book_1w_standard() {
 		final Room room = Rooms.roomsByFloorAndRoom.get(1).get(3);
 		if (bookedRooms.contains(room)) {
 			fail("Habitacion reservada previamente");
@@ -103,7 +106,7 @@ public class TestsReq2 {
 	}
 
 	@Test
-	public void book_1w_suite() {
+	public void _06_book_1w_suite() {
 		final Room room = Rooms.roomsByFloorAndRoom.get(1).get(35);
 		if (bookedRooms.contains(room)) {
 			fail("Habitacion reservada previamente");
@@ -117,7 +120,7 @@ public class TestsReq2 {
 	}
 
 	@Test
-	public void book_1m_standard() {
+	public void _07_book_1m_standard() {
 		final Room room = Rooms.roomsByFloorAndRoom.get(1).get(4);
 		if (bookedRooms.contains(room)) {
 			fail("Habitacion reservada previamente");
@@ -130,7 +133,7 @@ public class TestsReq2 {
 	}
 
 	@Test
-	public void book_1m_suite() {
+	public void _08_book_1m_suite() {
 		final Room room = Rooms.roomsByFloorAndRoom.get(1).get(36);
 		if (bookedRooms.contains(room)) {
 			fail("Habitacion reservada previamente");
@@ -143,7 +146,7 @@ public class TestsReq2 {
 	}
 
 	@Test
-	public void book_1d_standard_low_is_booked() {
+	public void _09_book_1d_standard_low_is_booked() {
 		final Room room = Rooms.roomsByFloorAndRoom.get(1).get(1);
 
 		final LocalDate monday = LocalDate.now().with(DayOfWeek.MONDAY);
@@ -154,7 +157,7 @@ public class TestsReq2 {
 	}
 
 	@Test
-	public void book_1d_standard_hi_is_booked() {
+	public void _10_book_1d_standard_hi_is_booked() {
 		final Room room = Rooms.roomsByFloorAndRoom.get(1).get(2);
 
 		final LocalDate friday = LocalDate.now().with(DayOfWeek.FRIDAY);
@@ -164,7 +167,7 @@ public class TestsReq2 {
 	}
 
 	@Test
-	public void book_1d_suite_low_is_booked() {
+	public void _11_book_1d_suite_low_is_booked() {
 		final Room room = Rooms.roomsByFloorAndRoom.get(1).get(11);
 
 		final LocalDate monday = LocalDate.now().with(DayOfWeek.MONDAY);
@@ -174,7 +177,7 @@ public class TestsReq2 {
 	}
 
 	@Test
-	public void book_1d_suite_hi_is_booked() {
+	public void _12_book_1d_suite_hi_is_booked() {
 		final Room room = Rooms.roomsByFloorAndRoom.get(1).get(18);
 
 		final LocalDate friday = LocalDate.now().with(DayOfWeek.FRIDAY);
@@ -184,7 +187,7 @@ public class TestsReq2 {
 	}
 
 	@Test
-	public void book_1w_standard_is_booked() {
+	public void _13_book_1w_standard_is_booked() {
 		final Room room = Rooms.roomsByFloorAndRoom.get(1).get(3);
 
 		final LocalDate monday = LocalDate.now().with(DayOfWeek.MONDAY);
@@ -196,7 +199,7 @@ public class TestsReq2 {
 	}
 
 	@Test
-	public void book_1w_suite_is_booked() {
+	public void _14_book_1w_suite_is_booked() {
 		final Room room = Rooms.roomsByFloorAndRoom.get(1).get(35);
 
 		final LocalDate _2019_01_01 = LocalDate.of(2019, Month.JANUARY, 1);
@@ -209,7 +212,7 @@ public class TestsReq2 {
 	}
 
 	@Test
-	public void book_1m_standard_is_booked() {
+	public void _15_book_1m_standard_is_booked() {
 		final Room room = Rooms.roomsByFloorAndRoom.get(1).get(4);
 
 		final LocalDate _2018_12_01 = LocalDate.of(2018, Month.DECEMBER, 1);
@@ -222,7 +225,7 @@ public class TestsReq2 {
 	}
 
 	@Test
-	public void book_1m_suite_is_booked() {
+	public void _16_book_1m_suite_is_booked() {
 		final Room room = Rooms.roomsByFloorAndRoom.get(1).get(36);
 
 		final LocalDate _2018_12_01 = LocalDate.of(2018, Month.DECEMBER, 1);
