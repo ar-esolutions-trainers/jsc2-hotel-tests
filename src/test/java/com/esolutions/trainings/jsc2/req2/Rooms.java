@@ -5,7 +5,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class Rooms {
+class Rooms {
 	static final Map<Integer, Map<Integer, Room>> roomsByFloorAndRoom;
 	static {
 		roomsByFloorAndRoom = Stream.of(
