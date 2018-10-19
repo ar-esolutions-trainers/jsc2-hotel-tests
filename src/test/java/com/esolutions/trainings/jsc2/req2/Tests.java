@@ -34,12 +34,9 @@ public class Tests {
 	@Before
 	public void setUp() {
 		this.restTemplate = new RestTemplate();
-		this.restTemplate.setInterceptors(Collections.singletonList(new ClientHttpRequestInterceptor() {
-			@Override
-			public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution) throws IOException {
-				System.out.println(new String(body, Charset.defaultCharset()));
-				return execution.execute(request, body);
-			}
+		this.restTemplate.setInterceptors(Collections.singletonList((request, body, execution) -> {
+			System.out.println(new String(body, Charset.defaultCharset()));
+			return execution.execute(request, body);
 		}));
 	}
 
