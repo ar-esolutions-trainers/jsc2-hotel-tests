@@ -16,7 +16,8 @@ import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
-public class Tests {
+public class
+Tests {
     private static final String RESOURCE = "/floors/%s/rooms/%s/wifi/ssid";
     private RestTemplate restTemplate;
 
