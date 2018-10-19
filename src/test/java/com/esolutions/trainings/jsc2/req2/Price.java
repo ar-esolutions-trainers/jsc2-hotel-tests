@@ -25,7 +25,7 @@ public abstract class Price {
 	abstract double priceOfRoom(Room r);
 
 	static Price ofDay(LocalDate d) {
-		if (WEEKENDS.contains(d)) {
+		if (WEEKENDS.contains(d.getDayOfWeek())) {
 			return HI_PRICE;
 		} else {
 			return LOW_PRICE;
