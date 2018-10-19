@@ -1,7 +1,6 @@
 package com.esolutions.trainings.jsc2.req1;
 
 import com.esolutions.trainings.jsc2.Config;
-import com.esolutions.trainings.jsc2.req3.SSidResponse;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,8 +27,8 @@ public class Tests {
     }
 
     @Test
-    public void req_1_f_259_r_24_is_39492(){
-        ResponseEntity<GuestResponse> response = restTemplate.getForEntity(Config.BASE_URL.concat(String.format(RESOURCE,259,24)), GuestResponse.class);
+    public void req_1_f_259_r_24_is_39492() {
+        ResponseEntity<GuestResponse> response = restTemplate.getForEntity(Config.BASE_URL.concat(String.format(RESOURCE, 259, 24)), GuestResponse.class);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         final GuestResponse respBody = response.getBody();
         assertThat(respBody, is(notNullValue()));
@@ -37,8 +36,8 @@ public class Tests {
     }
 
     @Test
-    public void req_1_f_60_r_11_is_2455(){
-        ResponseEntity<GuestResponse> response = restTemplate.getForEntity(Config.BASE_URL.concat(String.format(RESOURCE,259,24)), GuestResponse.class);
+    public void req_1_f_60_r_11_is_2455() {
+        ResponseEntity<GuestResponse> response = restTemplate.getForEntity(Config.BASE_URL.concat(String.format(RESOURCE, 60, 11)), GuestResponse.class);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         final GuestResponse respBody = response.getBody();
         assertThat(respBody, is(notNullValue()));
@@ -46,8 +45,8 @@ public class Tests {
     }
 
     @Test
-    public void req_1_f_3_r_2_is_5(){
-        ResponseEntity<GuestResponse> response = restTemplate.getForEntity(Config.BASE_URL.concat(String.format(RESOURCE,259,24)), GuestResponse.class);
+    public void req_1_f_3_r_2_is_5() {
+        ResponseEntity<GuestResponse> response = restTemplate.getForEntity(Config.BASE_URL.concat(String.format(RESOURCE, 3, 2)), GuestResponse.class);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         final GuestResponse respBody = response.getBody();
         assertThat(respBody, is(notNullValue()));
