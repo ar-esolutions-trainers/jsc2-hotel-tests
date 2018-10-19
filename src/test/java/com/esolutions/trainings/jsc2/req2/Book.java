@@ -9,13 +9,11 @@ import java.util.stream.Stream;
 public class Book {
 	private final LocalDate checkIn;
 	private final LocalDate checkOut;
-	private final int floor;
-	private final int room;
+	private final Room room;
 
-	Book(LocalDate checkIn, LocalDate checkOut, int floor, int room) {
+	Book(LocalDate checkIn, LocalDate checkOut, Room room) {
 		this.checkIn = checkIn;
 		this.checkOut = checkOut;
-		this.floor = floor;
 		this.room = room;
 	}
 
@@ -25,11 +23,9 @@ public class Book {
 	}
 
 	public BigDecimal price() {
-		final Room room = Rooms.roomsByFloorAndRoom.get(floor).get(this.room);
-
 		return this.days()
 				.map(Price::ofDay)
-				.map(p -> BigDecimal.valueOf(p.priceOfRoom(room)))
+				.map(p -> BigDecimal.valueOf(p.priceOfRoom(this.room)))
 				.reduce(BigDecimal.ZERO, BigDecimal::add);
 	}
 }

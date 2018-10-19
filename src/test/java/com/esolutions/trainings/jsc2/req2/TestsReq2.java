@@ -15,6 +15,7 @@ import java.nio.charset.Charset;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Month;
+import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -41,11 +42,6 @@ public class TestsReq2 {
 	}
 
 	@Test
-	public void x() {
-		System.out.println();
-	}
-
-	@Test
 	public void book_1d_standard_low() {
 		final Room room = Rooms.roomsByFloorAndRoom.get(1).get(1);
 		if (bookedRooms.contains(room)) {
@@ -54,8 +50,7 @@ public class TestsReq2 {
 		final LocalDate monday = LocalDate.now().with(DayOfWeek.MONDAY);
 		final LocalDate thursday = LocalDate.now().with(DayOfWeek.THURSDAY);
 
-		//Actual
-		_assert(room, monday, thursday, true);
+		_assert_can_book(room, monday, thursday);
 	}
 
 	@Test
@@ -67,8 +62,7 @@ public class TestsReq2 {
 		final LocalDate friday = LocalDate.now().with(DayOfWeek.FRIDAY);
 		final LocalDate saturday = LocalDate.now().with(DayOfWeek.SATURDAY);
 
-		//Actual
-		_assert(room, friday, saturday, true);
+		_assert_can_book(room, friday, saturday);
 	}
 
 	@Test
@@ -80,7 +74,7 @@ public class TestsReq2 {
 		final LocalDate monday = LocalDate.now().with(DayOfWeek.MONDAY);
 		final LocalDate thursday = LocalDate.now().with(DayOfWeek.THURSDAY);
 
-		_assert(room, monday, thursday, true);
+		_assert_can_book(room, monday, thursday);
 	}
 
 	@Test
@@ -92,7 +86,7 @@ public class TestsReq2 {
 		final LocalDate friday = LocalDate.now().with(DayOfWeek.FRIDAY);
 		final LocalDate saturday = LocalDate.now().with(DayOfWeek.SATURDAY);
 
-		_assert(room, friday, saturday, true);
+		_assert_can_book(room, friday, saturday);
 	}
 
 	@Test
@@ -105,7 +99,7 @@ public class TestsReq2 {
 		final LocalDate monday = LocalDate.now().with(DayOfWeek.MONDAY);
 		final LocalDate sunday = LocalDate.now().with(DayOfWeek.SUNDAY);
 
-		_assert(room, monday, sunday, true);
+		_assert_can_book(room, monday, sunday);
 	}
 
 	@Test
@@ -119,7 +113,7 @@ public class TestsReq2 {
 		final LocalDate monday = _2019_01_01.with(DayOfWeek.MONDAY);
 		final LocalDate sunday = _2019_01_01.with(DayOfWeek.SUNDAY);
 
-		_assert(room, monday, sunday, true);
+		_assert_can_book(room, monday, sunday);
 	}
 
 	@Test
@@ -132,7 +126,7 @@ public class TestsReq2 {
 		final LocalDate _2018_12_01 = LocalDate.of(2018, Month.DECEMBER, 1);
 		final LocalDate _2018_12_31 = LocalDate.of(2018, Month.DECEMBER, 31);
 
-		_assert(room, _2018_12_01, _2018_12_31, true);
+		_assert_can_book(room, _2018_12_01, _2018_12_31);
 	}
 
 	@Test
@@ -145,15 +139,107 @@ public class TestsReq2 {
 		final LocalDate _2018_12_01 = LocalDate.of(2018, Month.DECEMBER, 1);
 		final LocalDate _2018_12_31 = LocalDate.of(2018, Month.DECEMBER, 31);
 
-		_assert(room, _2018_12_01, _2018_12_31, true);
+		_assert_can_book(room, _2018_12_01, _2018_12_31);
 	}
 
-	private void _assert(Room room, LocalDate checkIn, LocalDate checkOut, boolean shouldBeBooked) {
-		//Expected
-		final BigDecimal expectedPrice = new Book(checkIn, checkOut, room.getFloor(), room.getRoom()).price();
+	@Test
+	public void book_1d_standard_low_is_booked() {
+		final Room room = Rooms.roomsByFloorAndRoom.get(1).get(1);
+
+		final LocalDate monday = LocalDate.now().with(DayOfWeek.MONDAY);
+		final LocalDate thursday = LocalDate.now().with(DayOfWeek.THURSDAY);
 
 		//Actual
-		BookReq request = new BookReq(checkIn, checkOut);
+		_assert_cant_book(room, monday, thursday);
+	}
+
+	@Test
+	public void book_1d_standard_hi_is_booked() {
+		final Room room = Rooms.roomsByFloorAndRoom.get(1).get(2);
+
+		final LocalDate friday = LocalDate.now().with(DayOfWeek.FRIDAY);
+		final LocalDate saturday = LocalDate.now().with(DayOfWeek.SATURDAY);
+
+		_assert_cant_book(room, friday, saturday);
+	}
+
+	@Test
+	public void book_1d_suite_low_is_booked() {
+		final Room room = Rooms.roomsByFloorAndRoom.get(1).get(11);
+
+		final LocalDate monday = LocalDate.now().with(DayOfWeek.MONDAY);
+		final LocalDate thursday = LocalDate.now().with(DayOfWeek.THURSDAY);
+
+		_assert_cant_book(room, monday, thursday);
+	}
+
+	@Test
+	public void book_1d_suite_hi_is_booked() {
+		final Room room = Rooms.roomsByFloorAndRoom.get(1).get(18);
+
+		final LocalDate friday = LocalDate.now().with(DayOfWeek.FRIDAY);
+		final LocalDate saturday = LocalDate.now().with(DayOfWeek.SATURDAY);
+
+		_assert_cant_book(room, friday, saturday);
+	}
+
+	@Test
+	public void book_1w_standard_is_booked() {
+		final Room room = Rooms.roomsByFloorAndRoom.get(1).get(3);
+
+		final LocalDate monday = LocalDate.now().with(DayOfWeek.MONDAY);
+		final LocalDate sunday = LocalDate.now().with(DayOfWeek.SUNDAY);
+
+		_assert_cant_book(room, monday, monday.plus(1, ChronoUnit.DAYS));
+		_assert_cant_book(room, monday.plus(4, ChronoUnit.DAYS), sunday);
+		_assert_cant_book(room, monday, sunday);
+	}
+
+	@Test
+	public void book_1w_suite_is_booked() {
+		final Room room = Rooms.roomsByFloorAndRoom.get(1).get(35);
+
+		final LocalDate _2019_01_01 = LocalDate.of(2019, Month.JANUARY, 1);
+		final LocalDate monday = _2019_01_01.with(DayOfWeek.MONDAY);
+		final LocalDate sunday = _2019_01_01.with(DayOfWeek.SUNDAY);
+
+		_assert_cant_book(room, monday, monday.plus(1, ChronoUnit.DAYS));
+		_assert_cant_book(room, monday.plus(4, ChronoUnit.DAYS), sunday);
+		_assert_cant_book(room, monday, sunday);
+	}
+
+	@Test
+	public void book_1m_standard_is_booked() {
+		final Room room = Rooms.roomsByFloorAndRoom.get(1).get(4);
+
+		final LocalDate _2018_12_01 = LocalDate.of(2018, Month.DECEMBER, 1);
+		final LocalDate _2018_12_31 = LocalDate.of(2018, Month.DECEMBER, 31);
+
+		_assert_cant_book(room, _2018_12_01, _2018_12_31);
+		_assert_cant_book(room, _2018_12_01, _2018_12_01.plus(1, ChronoUnit.DAYS));
+		_assert_cant_book(room, _2018_12_01.plus(10, ChronoUnit.DAYS), _2018_12_01.plus(12, ChronoUnit.DAYS));
+		_assert_cant_book(room, _2018_12_31.minus(1, ChronoUnit.DAYS), _2018_12_31);
+	}
+
+	@Test
+	public void book_1m_suite_is_booked() {
+		final Room room = Rooms.roomsByFloorAndRoom.get(1).get(36);
+
+		final LocalDate _2018_12_01 = LocalDate.of(2018, Month.DECEMBER, 1);
+		final LocalDate _2018_12_31 = LocalDate.of(2018, Month.DECEMBER, 31);
+
+		_assert_cant_book(room, _2018_12_01, _2018_12_31);
+		_assert_cant_book(room, _2018_12_01, _2018_12_01.plus(1, ChronoUnit.DAYS));
+		_assert_cant_book(room, _2018_12_01.plus(20, ChronoUnit.DAYS), _2018_12_01.plus(21, ChronoUnit.DAYS));
+		_assert_cant_book(room, _2018_12_31.minus(1, ChronoUnit.DAYS), _2018_12_31);
+	}
+
+	private void _assert_can_book(Room room, LocalDate checkIn, LocalDate checkOut) {
+		//Expected
+		final BigDecimal expectedPrice = new Book(checkIn, checkOut, room).price();
+
+		//Actual
+		final BookReq request = new BookReq(checkIn, checkOut);
 		final String url = Config.BASE_URL.concat(String.format(RESOURCE, room.getFloor(), room.getRoom()));
 
 		final ResponseEntity<BookRes> resp = restTemplate.postForEntity(url, request, BookRes.class);
@@ -162,7 +248,20 @@ public class TestsReq2 {
 		assertThat(resp.getStatusCode(), is(HttpStatus.OK));
 		bookedRooms.add(room);
 		assertThat(respBody, is(notNullValue()));
-		assertThat(respBody.getBooked(), is(shouldBeBooked));
+		assertThat(respBody.getBooked(), is(true));
 		assertThat(respBody.getPrice(), is(expectedPrice));
+	}
+
+	private void _assert_cant_book(Room room, LocalDate checkIn, LocalDate checkOut) {
+		//Actual
+		final BookReq request = new BookReq(checkIn, checkOut);
+		final String url = Config.BASE_URL.concat(String.format(RESOURCE, room.getFloor(), room.getRoom()));
+
+		final ResponseEntity<BookRes> resp = restTemplate.postForEntity(url, request, BookRes.class);
+		final BookRes respBody = resp.getBody();
+
+		assertThat(resp.getStatusCode(), is(HttpStatus.OK));
+		assertThat(respBody, is(notNullValue()));
+		assertThat(respBody.getBooked(), is(false));
 	}
 }
